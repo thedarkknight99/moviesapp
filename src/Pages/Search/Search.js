@@ -20,12 +20,31 @@ const Search = () => {
 
     const fetchSearch = async () => {
         try {
-            const data = await axios.get(`https://api.themoviedb.org/3/search/${type ? "tv" : "movie"}?api_key=${process.env.REACT_APP_API_KEY}
-                        &language=en-US&query=${searchText}&page=${page}&include_adult=false`);
-            setContent(data.results);
-            setnumOfPages(data.total_pages);
+            // const data = await axios.get(`https://api.themoviedb.org/3/search/${type ? "tv" : "movie"}?api_key=${process.env.REACT_APP_API_KEY}
+            //             &language=en-US&query=${searchText}&page=${page}&include_adult=false`);
+            // setContent(data.results);
+            // setnumOfPages(data.total_pages);
+            // console.log(data)
+
+            var config = {
+                method: 'get',
+                url: `https://api.themoviedb.org/3/search/${type ? "tv" : "movie"}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1&include_adult=false&query=${searchText}`,
+
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                    setContent(response.data.results);
+                    setnumOfPages(response.data.total_pages);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
         }
         catch (err) {
+            //console.log(process.env.REACT_APP_API_KEY)
             console.log(err);
         }
 
